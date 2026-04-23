@@ -14,7 +14,7 @@ export const arsenalTools: Tool[] = [
     descricao: "O conjunto essencial para quem está começando seu arsenal doméstico.",
     link_redirecionamento: "https://s.shopee.com.br/5q4PzQjwUC",
     categoria: "Ferramentas",
-    imagem_url: "https://m.media-amazon.com/images/I/71wLpQZ9P1L._AC_SL1500_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/br-11134201-7r98o-lqdr50o60v8nf9"
   },
   {
     id: "kit-ferramentas-12p-maleta",
@@ -22,7 +22,7 @@ export const arsenalTools: Tool[] = [
     descricao: "Organização e praticidade com maleta resistente para transporte.",
     link_redirecionamento: "https://s.shopee.com.br/AKWpLm4ArY",
     categoria: "Ferramentas",
-    imagem_url: "https://m.media-amazon.com/images/I/71iVwDqj92L._AC_SL1500_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/66d06d42f0f24e100f574d93a9519fd6"
   },
   {
     id: "kit-reparo-junta-torneira",
@@ -30,7 +30,7 @@ export const arsenalTools: Tool[] = [
     descricao: "Solução anti-vazamento definitiva com vários tamanhos.",
     link_redirecionamento: "https://s.shopee.com.br/6pwxBRtI6r",
     categoria: "Hidráulica",
-    imagem_url: "https://m.media-amazon.com/images/I/61kM290+kRL._AC_SL1500_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/br-11134207-820lk-mmtt7pso55ogb8_tn"
   },
   {
     id: "multimetro-digital-dt830",
@@ -38,7 +38,7 @@ export const arsenalTools: Tool[] = [
     descricao: "Precisão para medições elétricas com bipe sonoro de continuidade.",
     link_redirecionamento: "https://s.shopee.com.br/8KlkyGYhHJ",
     categoria: "Elétrica",
-    imagem_url: "https://m.media-amazon.com/images/I/61E9gP5fRLL._AC_SL1200_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/br-11134201-7r98o-lqu65on80v8nf9"
   },
   {
     id: "kit-hidraulica-essencial",
@@ -46,7 +46,7 @@ export const arsenalTools: Tool[] = [
     descricao: "O trio de ferro indispensável para manutenção hidráulica e elétrica.",
     link_redirecionamento: "https://s.shopee.com.br/AADP9jGUiL",
     categoria: "Ferramentas Pesadas",
-    imagem_url: "https://m.media-amazon.com/images/I/61-T68Cj0uL._AC_SL1000_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lqdr50o60v8nf9"
   },
   {
     id: "massa-corrida-pva-1kg",
@@ -54,7 +54,7 @@ export const arsenalTools: Tool[] = [
     descricao: "Pronta para uso: ideal para pequenos reparos e furos em paredes.",
     link_redirecionamento: "https://s.shopee.com.br/AUqFYSGrm1",
     categoria: "Reparos",
-    imagem_url: "https://m.media-amazon.com/images/I/51rJj-rR0QL._AC_SL1000_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfk4vk451u6ca0_tn"
   },
   {
     id: "kit-buchas-gesso-drywall",
@@ -62,7 +62,7 @@ export const arsenalTools: Tool[] = [
     descricao: "Fixação segura e específica para superfícies de gesso.",
     link_redirecionamento: "https://s.shopee.com.br/6AhGOdO5eM",
     categoria: "Ferragens",
-    imagem_url: "https://m.media-amazon.com/images/I/51SItV-nIfL._AC_SL1500_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/sg-11134201-81zvf-mn4f3dgk2ays51"
   },
   {
     id: "kit-soquetes-catraca-completo",
@@ -70,7 +70,7 @@ export const arsenalTools: Tool[] = [
     descricao: "Agilidade e torque para montagens e mecânica em geral.",
     link_redirecionamento: "https://s.shopee.com.br/9AKryI0qxB",
     categoria: "Ferramentas",
-    imagem_url: "https://m.media-amazon.com/images/I/71YtL0O1JML._AC_SL1500_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/br-11134201-7r98o-lqu65on80v8nf9"
   },
   {
     id: "kit-chaves-inglesas-ajustaveis",
@@ -78,6 +78,6 @@ export const arsenalTools: Tool[] = [
     descricao: "Versatilidade profissional para diferentes bitolas de parafusos e tubos.",
     link_redirecionamento: "https://s.shopee.com.br/4fsSc5yz5r",
     categoria: "Ferramentas",
-    imagem_url: "https://m.media-amazon.com/images/I/71f-0eXZmYL._AC_SL1500_.jpg"
+    imagem_url: "https://down-br.img.susercontent.com/file/sg-11134201-81ztz-miukszk6o8p011"
   }
 ];
