@@ -1,0 +1,6 @@
+{
+  "name": "Viltrum",
+  "description": "",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": []
+}

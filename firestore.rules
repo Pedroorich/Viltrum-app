@@ -1,0 +1,120 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitives
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'xp', 'rank', 'createdAt']) && 
+             data.keys().size() <= 8 &&
+             data.uid is string && data.uid.size() <= 128 &&
+             data.email is string && data.email.size() <= 256 &&
+             data.xp is number && data.xp >= 0 &&
+             data.rank is string && data.rank in ['Recruta', 'Soldado', 'Viltrumita', 'Omni-Man', 'Thragg'] &&
+             data.createdAt == request.time;
+    }
+
+    function isValidUserUpdate(data) {
+      return ( !('uid' in data) || (data.uid is string && data.uid.size() <= 128) ) &&
+             ( !('email' in data) || (data.email is string && data.email.size() <= 256) ) &&
+             ( !('xp' in data) || (data.xp is number && data.xp >= 0) ) &&
+             ( !('rank' in data) || (data.rank is string && data.rank in ['Recruta', 'Soldado', 'Viltrumita', 'Omni-Man', 'Thragg']) ) &&
+             ( !('createdAt' in data) || data.createdAt == existing().createdAt ) &&
+             ( !('updatedAt' in data) || data.updatedAt == request.time ) &&
+             ( !('isPremium' in data) || data.isPremium is bool ) &&
+             ( !('streakContext' in data) || (data.streakContext is map && data.streakContext.keys().hasAll(['currentStreak', 'lastConquestDate'])) );
+    }
+
+    function isValidConquest(data) {
+      return data.keys().hasAll(['conquestId', 'userId', 'title', 'type', 'xpEarned', 'completedAt']) &&
+             data.keys().size() <= 6 &&
+             data.conquestId is string && data.conquestId.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 128 && data.userId == request.auth.uid &&
+             data.title is string && data.title.size() <= 100 &&
+             data.type is string && data.type.size() <= 50 &&
+             data.xpEarned is number && data.xpEarned >= 0 &&
+             data.completedAt == request.time;
+    }
+
+    function isValidPost(data) {
+      return data.keys().hasAll(['postId', 'userId', 'userName', 'description', 'createdAt']) &&
+             data.postId is string && data.postId.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 128 && data.userId == request.auth.uid &&
+             data.userName is string && data.userName.size() <= 100 &&
+             data.description is string && data.description.size() <= 2000 &&
+             (!('imageUrl' in data) || (data.imageUrl is string && data.imageUrl.size() <= 1000)) &&
+             (!('category' in data) || (data.category is string && data.category.size() <= 100)) &&
+             (!('likedBy' in data) || data.likedBy is list) &&
+             (!('likesCount' in data) || data.likesCount is number) &&
+             data.createdAt == request.time;
+    }
+
+    function isValidPostUpdate(data) {
+      return ( !('likedBy' in data) || data.likedBy is list ) &&
+             ( !('likesCount' in data) || data.likesCount is number );
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if isOwner(userId) && resource.data.uid == request.auth.uid;
+      
+      allow create: if isOwner(userId) && isValidId(userId) && 
+                       isValidUser(incoming()) && incoming().uid == request.auth.uid;
+                       
+      allow update: if isOwner(userId) && isValidId(userId) &&
+                       isValidUserUpdate(incoming()) &&
+                       incoming().uid == existing().uid &&
+                       incoming().email == existing().email &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['xp', 'rank', 'streakContext', 'isPremium', 'updatedAt']);
+                       
+      allow delete: if false;
+
+      match /conquests/{conquestId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(conquestId);
+        allow list: if isOwner(userId) && isValidId(userId) && resource.data.userId == request.auth.uid;
+
+        allow create: if isOwner(userId) && isValidId(userId) && isValidId(conquestId) &&
+                         isValidConquest(incoming());
+                         
+        allow update, delete: if false;
+      }
+    }
+
+    match /posts/{postId} {
+      allow get: if isSignedIn() && isValidId(postId);
+      allow list: if isSignedIn();
+
+      allow create: if isSignedIn() && isValidId(postId) &&
+                       isValidPost(incoming()) &&
+                       exists(/databases/$(database)/documents/users/$(request.auth.uid));
+                       
+      allow update: if isSignedIn() && isValidId(postId) &&
+                       isValidPostUpdate(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().postId == existing().postId &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['likedBy', 'likesCount']);
+                       
+      allow delete: if false;
+
+      match /comments/{commentId} {
+         allow read: if isSignedIn();
+         allow create: if isSignedIn() && isValidId(commentId) &&
+                       incoming().keys().hasAll(['commentId', 'userId', 'userName', 'text', 'createdAt']) &&
+                       incoming().userId == request.auth.uid &&
+                       incoming().text is string && incoming().text.size() <= 500 &&
+                       incoming().createdAt == request.time;
+         allow update, delete: if false;
+      }
+    }
+  }
+}

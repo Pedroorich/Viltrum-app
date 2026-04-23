@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --font-headline: "Arial Black", Gadget, sans-serif;
+  --font-body: Arial, sans-serif;
+  --font-label: "Courier New", Courier, monospace;
+
+  --color-primary: #FFB4A8;
+  --color-on-primary: #000000;
+  --color-primary-container: #8B0100;
+  --color-on-primary-container: #FFFFFF;
+  --color-primary-fixed-dim: #FFB4A8;
+  
+  --color-secondary: #FFB4A8;
+  --color-on-secondary: #000000;
+  --color-secondary-container: #FF4D4D;
+  --color-on-secondary-container: #FFFFFF;
+  --color-secondary-fixed-variant: #FF4D4D;
+
+  --color-tertiary: #c8c6c6;
+  --color-on-tertiary: #131313;
+  --color-tertiary-container: #353534;
+  --color-on-tertiary-container: #8E8E8E;
+
+  --color-error: #FF4D4D;
+  --color-on-error: #000000;
+  --color-error-container: #8B0100;
+  --color-on-error-container: #FFFFFF;
+
+  --color-background: #131313;
+  --color-on-background: #FFFFFF;
+  --color-surface: #131313;
+  --color-on-surface: #FFFFFF;
+  --color-surface-variant: #353534;
+  --color-on-surface-variant: #8E8E8E;
+  --color-outline: #8E8E8E;
+  --color-outline-variant: #353534;
+  
+  --color-surface-container-lowest: #0E0E0E;
+  --color-surface-container-low: #1C1B1B;
+  --color-surface-container: #201F1F;
+  --color-surface-container-high: #2A2A2A;
+  --color-surface-container-highest: #353534; /* Maps to bg-elevated */
+  --color-surface-bright: #353534;
+  --color-surface-dim: #131313;
+  
+  --color-inverse-surface: #FFFFFF;
+  --color-inverse-on-surface: #131313;
+  --color-inverse-primary: #8B0100;
+
+  --bg-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+@layer utilities {
+  * {
+    border-radius: 0 !important;
+  }
+  .noise-bg {
+    background-image: var(--bg-noise);
+  }
+  .impact-glow {
+    box-shadow: 0 0 40px 8px rgba(255, 180, 168, 0.08);
+  }
+  .ghost-border {
+    border: 2px solid rgba(142, 142, 142, 0.2);
+  }
+  .brutalist-button-hover:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-primary);
+  }
+  .brutalist-button-active:active {
+    transform: translate(0px, 0px);
+    box-shadow: 0px 0px 0px var(--color-primary);
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the Viltrum app",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "rank": { "type": "string", "enum": ["Recruta", "Soldado", "Viltrumita", "Omni-Man", "Thragg"] },
+        "xp": { "type": "number" },
+        "streakContext": {
+          "type": "object",
+          "properties": {
+            "currentStreak": { "type": "number" },
+            "lastConquestDate": { "type": "string", "format": "date-time" }
+          }
+        },
+        "isPremium": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "xp", "rank", "createdAt"]
+    },
+    "Conquest": {
+      "title": "Conquest",
+      "description": "A completed task or tutorial by a user",
+      "type": "object",
+      "properties": {
+        "conquestId": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string" },
+        "xpEarned": { "type": "number" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conquestId", "userId", "title", "type", "xpEarned", "completedAt"]
+    },
+    "CommunityPost": {
+      "title": "Community Post",
+      "description": "A before/after post on the Legion feed",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "likedBy": { "type": "array", "items": { "type": "string" } },
+        "likesCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "userId", "userName", "description", "createdAt"]
+    },
+    "CommunityComment": {
+      "title": "Community Comment",
+      "type": "object",
+      "properties": {
+        "commentId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["commentId", "userId", "userName", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profile containing XP and rank data."
+    },
+    "/users/{userId}/conquests/{conquestId}": {
+      "schema": { "$ref": "#/entities/Conquest" },
+      "description": "A user's history of conquests."
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/CommunityPost" },
+      "description": "Global Legion feed posts."
+    }
+  }
+}
