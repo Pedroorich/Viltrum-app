@@ -38,7 +38,7 @@ export const arsenalTools: Tool[] = [
     descricao: "Precisão para medições elétricas com bipe sonoro de continuidade.",
     link_redirecionamento: "https://s.shopee.com.br/8KlkyGYhHJ",
     categoria: "Elétrica",
-    imagem_url: "https://down-br.img.susercontent.com/file/br-11134201-7r98o-lqu65on80v8nf9"
+    imagem_url: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-ls2qopmnkx7od1.webp"
   },
   {
     id: "kit-hidraulica-essencial",
@@ -46,7 +46,7 @@ export const arsenalTools: Tool[] = [
     descricao: "O trio de ferro indispensável para manutenção hidráulica e elétrica.",
     link_redirecionamento: "https://s.shopee.com.br/AADP9jGUiL",
     categoria: "Ferramentas Pesadas",
-    imagem_url: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lqdr50o60v8nf9"
+    imagem_url: "https://down-br.img.susercontent.com/file/sg-11134201-8261w-mjy2sylgsn46ce.webp"
   },
   {
     id: "massa-corrida-pva-1kg",
@@ -70,7 +70,7 @@ export const arsenalTools: Tool[] = [
     descricao: "Agilidade e torque para montagens e mecânica em geral.",
     link_redirecionamento: "https://s.shopee.com.br/9AKryI0qxB",
     categoria: "Ferramentas",
-    imagem_url: "https://down-br.img.susercontent.com/file/br-11134201-7r98o-lqu65on80v8nf9"
+    imagem_url: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-mdgpxgy9mxn5e5.webp"
   },
   {
     id: "kit-chaves-inglesas-ajustaveis",
