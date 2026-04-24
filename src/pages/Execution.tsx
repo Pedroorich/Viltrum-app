@@ -126,14 +126,44 @@ export default function Execution() {
         model: "gemini-2.5-flash",
         contents: [
           { role: 'user', parts: [
-            { text: `Sua função: IA Tática Visual. O usuário está realizando um conserto (Tutorial: "${tutorial?.titulo}").\nPasso atual que ele tem que resolver:\n${activeStep}\n\nDiretriz: Analise a imagem. Diga o que o usuário DEVE FAZER AGORA baseado no que você enxerga em relação ao passo atual, indicando com precisão onde focar ou alertando sobre erros.\nTom: Extremamente agressivo, hiper direto, jargão tático.\nTamanho: MÁXIMO 8 PALAVRAS, TOTALMENTE EM MAIÚSCULAS.` },
+            { text: `Você é uma IA Tática Visual guiando um conserto: "${tutorial?.titulo}".
+Passo atual que o usuário DEVE resolver agora: "${activeStep}"
+
+Sua missão:
+1. Analise a imagem da câmera. O usuário JÁ EXECUTOU E CONCLUIU este passo atual na imagem? (se sim, concluido: true)
+2. Diga o que ele DEVE FAZER AGORA (instrução sobre o passo, ou alertar sobre erro).
+
+Responda EXCLUSIVAMENTE em JSON:
+{
+  "concluido": true ou false,
+  "dica": "SUA INSTRUÇÃO AQUI. MÁX 8 PALAVRAS. TODO MAIÚSCULAS. TOM MILITAR."
+}` },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } }
           ]}
         ]
       });
       
       if (response.text) {
-        setArAnalysisText(response.text.replace(/\n/g, '').trim());
+        try {
+          const cleanJson = response.text.replace(/```json/g, '').replace(/```/g, '').trim();
+          const result = JSON.parse(cleanJson);
+          
+          if (result.dica) {
+            setArAnalysisText(result.dica);
+          }
+          
+          if (result.concluido && activeIndex >= 0) {
+            setChecks(prev => {
+              const newChecks = [...prev];
+              newChecks[activeIndex] = true;
+              return newChecks;
+            });
+            setArAnalysisText("ALVO ABATIDO. PRÓXIMO PASSO.");
+          }
+        } catch (e) {
+          console.error("Falha no parse do JSON da IA:", e);
+          setArAnalysisText("CONTINUE EXECUTANDO A MANOBRA.");
+        }
       }
     } catch(e) {
       console.error("Radar corrompido:", e);
@@ -305,22 +335,6 @@ export default function Execution() {
                     <Crosshair className="text-primary/60 w-12 h-12 absolute" />
                   </div>
                   
-                  {/* IA Analysis Box (Centered bottom with status indicator) */}
-                  <div className="absolute bottom-6 flex flex-col items-center gap-2 pointer-events-auto w-[90vw] md:w-[400px]">
-                     <div className="bg-[#8B0000] text-white font-headline uppercase font-black text-sm px-6 py-3 tracking-widest shadow-[0_0_20px_rgba(139,0,0,0.6)] border-2 border-white/20 w-full flex items-center justify-center gap-3">
-                       {isAnalyzing ? (
-                         <><Radar className="w-5 h-5 animate-spin" /> ANALISANDO AMBIENTE...</>
-                       ) : (
-                         <><Camera className="w-5 h-5 animate-pulse" /> VARREDURA ATIVA</>
-                       )}
-                     </div>
-                    <div className="bg-[#0a0a0a]/95 px-4 py-3 border-l-4 border-[#8B0000] flex items-center gap-3 w-full shadow-[0_0_30px_rgba(0,0,0,0.8)]">
-                      <Radar className={`w-6 h-6 flex-shrink-0 ${isAnalyzing ? 'text-white animate-spin' : 'text-[#ff4d4d]'}`} />
-                      <span className="text-white font-headline font-black uppercase tracking-widest text-[11px] sm:text-sm drop-shadow-[0_0_8px_rgba(255,0,0,0.6)] text-wrap leading-tight">
-                        {arAnalysisText}
-                      </span>
-                    </div>
-                  </div>
                 </div>
               </>
             )}
@@ -347,6 +361,21 @@ export default function Execution() {
                 <h3 className="font-headline text-outline text-[10px] sm:text-xs uppercase tracking-[0.2em] flex flex-col">
                   DIRETRIZES TÁTICAS (Sincronizado)
                 </h3>
+
+                {/* IA Feedback integrado na caixa */}
+                <div className="bg-black/60 border border-[#8B0000]/50 p-3 flex flex-col gap-2 relative overflow-hidden">
+                  <div className="absolute inset-0 noise-bg mix-blend-overlay opacity-20 pointer-events-none"></div>
+                  <div className="flex items-center gap-2 relative z-10">
+                    <Radar className={`w-4 h-4 ${isAnalyzing ? 'text-white animate-spin' : 'text-[#ff4d4d]'}`} />
+                    <span className="font-label text-[10px] text-[#ff4d4d] uppercase tracking-widest font-bold">
+                      {isAnalyzing ? 'ANALISANDO PROGRESSO...' : 'VARREDURA ATIVA'}
+                    </span>
+                  </div>
+                  <span className="text-white font-headline font-black uppercase tracking-widest text-xs sm:text-sm drop-shadow-[0_0_8px_rgba(255,0,0,0.6)] text-wrap leading-tight relative z-10">
+                    {arAnalysisText}
+                  </span>
+                </div>
+
                  <div className="flex flex-col gap-2 sm:gap-3">
                   {epicSteps.map((step, index) => (
                     <label key={index} className="flex items-start gap-3 cursor-pointer group touch-manipulation">
