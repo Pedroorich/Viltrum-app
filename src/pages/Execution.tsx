@@ -79,17 +79,32 @@ export default function Execution() {
   useEffect(() => {
     if (arModeEnabled && mediaStream && videoRef.current) {
       videoRef.current.srcObject = mediaStream;
+      videoRef.current.play().catch(e => console.error("Video play error:", e));
     }
   }, [arModeEnabled, mediaStream]);
 
-  // AI Camera Analysis - Manual Trigger Execution
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    if (arModeEnabled && mediaStream && !cameraError && !dominado) {
+      intervalId = setInterval(() => {
+        analyzeFrame();
+      }, 4000);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [arModeEnabled, mediaStream, cameraError, dominado]);
+
+  // Automatic AI Camera Analysis
   const analyzeFrame = async () => {
     if (!arModeEnabled || !mediaStream || dominado || cameraError) return;
     if (!videoRef.current || !canvasRef.current || isAnalyzingRef.current) return;
     
     isAnalyzingRef.current = true;
     setIsAnalyzing(true);
-    setArAnalysisText("ESCOPEANDO SETOR... (1 SHOT)");
+    setArAnalysisText("ESCOPEANDO SETOR...");
     
     const activeIndex = checks.findIndex(c => !c);
     const activeStep = activeIndex >= 0 ? epicSteps[activeIndex] : "FINALIZADO";
@@ -290,19 +305,15 @@ export default function Execution() {
                     <Crosshair className="text-primary/60 w-12 h-12 absolute" />
                   </div>
                   
-                  {/* IA Analysis Box (Centered bottom with trigger button) */}
+                  {/* IA Analysis Box (Centered bottom with status indicator) */}
                   <div className="absolute bottom-6 flex flex-col items-center gap-2 pointer-events-auto w-[90vw] md:w-[400px]">
-                     <button 
-                       onClick={analyzeFrame}
-                       disabled={isAnalyzing}
-                       className={`bg-[#8B0000] text-white font-headline uppercase font-black text-sm px-6 py-4 tracking-widest shadow-[0_0_20px_rgba(139,0,0,0.6)] border-2 border-white/20 transition-all w-full flex items-center justify-center gap-3 ${isAnalyzing ? 'opacity-50 cursor-not-allowed scale-95' : 'hover:scale-[1.02] active:scale-95 hover:border-white/50'}`}
-                     >
+                     <div className="bg-[#8B0000] text-white font-headline uppercase font-black text-sm px-6 py-3 tracking-widest shadow-[0_0_20px_rgba(139,0,0,0.6)] border-2 border-white/20 w-full flex items-center justify-center gap-3">
                        {isAnalyzing ? (
-                         <><Radar className="w-5 h-5 animate-spin" /> PROCESSANDO 1-SHOT...</>
+                         <><Radar className="w-5 h-5 animate-spin" /> ANALISANDO AMBIENTE...</>
                        ) : (
-                         <><Camera className="w-5 h-5" /> ESCANEAR ALVO AGORA</>
+                         <><Camera className="w-5 h-5 animate-pulse" /> VARREDURA ATIVA</>
                        )}
-                     </button>
+                     </div>
                     <div className="bg-[#0a0a0a]/95 px-4 py-3 border-l-4 border-[#8B0000] flex items-center gap-3 w-full shadow-[0_0_30px_rgba(0,0,0,0.8)]">
                       <Radar className={`w-6 h-6 flex-shrink-0 ${isAnalyzing ? 'text-white animate-spin' : 'text-[#ff4d4d]'}`} />
                       <span className="text-white font-headline font-black uppercase tracking-widest text-[11px] sm:text-sm drop-shadow-[0_0_8px_rgba(255,0,0,0.6)] text-wrap leading-tight">
