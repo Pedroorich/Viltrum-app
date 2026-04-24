@@ -84,16 +84,17 @@ export default function Execution() {
   }, [arModeEnabled, mediaStream]);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout;
 
     if (arModeEnabled && mediaStream && !cameraError && !dominado) {
-      intervalId = setInterval(() => {
+      // Faz apenas uma varredura inicial após ativar a câmera
+      timeoutId = setTimeout(() => {
         analyzeFrame();
-      }, 4000);
+      }, 1500);
     }
 
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, [arModeEnabled, mediaStream, cameraError, dominado]);
 
@@ -374,6 +375,15 @@ Responda EXCLUSIVAMENTE em JSON:
                   <span className="text-white font-headline font-black uppercase tracking-widest text-xs sm:text-sm drop-shadow-[0_0_8px_rgba(255,0,0,0.6)] text-wrap leading-tight relative z-10">
                     {arAnalysisText}
                   </span>
+                  {!allChecked && !dominado && (
+                    <button 
+                      onClick={analyzeFrame} 
+                      disabled={isAnalyzing} 
+                      className={`mt-2 bg-[#8B0000] text-white py-2 font-headline uppercase font-black text-[10px] sm:text-xs tracking-widest transition-all w-full flex items-center justify-center gap-2 relative z-10 ${isAnalyzing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#ff4d4d]/80 active:scale-[0.98] border border-white/20 shadow-[0_0_15px_rgba(139,0,0,0.5)]'}`}
+                    >
+                      <Camera className="w-3 h-3 sm:w-4 sm:h-4" /> VERIFICAR PROGRESSO
+                    </button>
+                  )}
                 </div>
 
                  <div className="flex flex-col gap-2 sm:gap-3">
