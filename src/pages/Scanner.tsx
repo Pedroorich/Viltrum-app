@@ -48,7 +48,7 @@ Voz da IA: Você é a IA Viltrumita Conquista. Tom épico, viril, impiedoso, dir
 Retorne uma análise crua e direta do que quebrou e diga os passos que o usuário deve executar para consertar.`;
 
       const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-2.5-flash",
         contents: {
           parts: [
             { inlineData: { data: base64Image, mimeType: file.type } },
