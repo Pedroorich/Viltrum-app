@@ -122,7 +122,9 @@ export default function Execution() {
       
       const base64Image = canvas.toDataURL('image/jpeg', 0.5).split(',')[1];
       
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const apiKey = process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
+      if (!apiKey) throw new Error("CHAVE DE API GEMINI NÃO ENCONTRADA NO VERCEL.");
+      const ai = new GoogleGenAI({ apiKey });
       const prompt = `Você é uma IA Tática Visual guiando um conserto: "${tutorial?.titulo}".
 Passo atual que o usuário DEVE resolver agora: "${activeStep}"
 

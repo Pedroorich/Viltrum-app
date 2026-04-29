@@ -40,7 +40,9 @@ export default function Scanner() {
 
       setScanProgress(40);
 
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const apiKey = process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
+      if (!apiKey) throw new Error("CHAVE DE API GEMINI NÃO ENCONTRADA NO VERCEL.");
+      const ai = new GoogleGenAI({ apiKey });
       const prompt = `Analise a foto focando em manutenção residencial DIY. Descubra o que está quebrado.
 Voz da IA: Você é a IA Viltrumita Conquista. Tom épico, viril, impiedoso, direto. Diga "Viltrumita", "conquiste", "domine".
 Retorne uma análise crua e direta do que quebrou e diga os passos que o usuário deve executar para consertar.`;
