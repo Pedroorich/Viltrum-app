@@ -124,7 +124,7 @@ export default function Execution() {
       
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.0-flash",
         contents: [
           { role: 'user', parts: [
             { text: `Você é uma IA Tática Visual guiando um conserto: "${tutorial?.titulo}".
