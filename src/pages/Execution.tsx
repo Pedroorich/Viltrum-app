@@ -123,11 +123,7 @@ export default function Execution() {
       const base64Image = canvas.toDataURL('image/jpeg', 0.5).split(',')[1];
       
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: [
-          { role: 'user', parts: [
-            { text: `Você é uma IA Tática Visual guiando um conserto: "${tutorial?.titulo}".
+      const prompt = `Você é uma IA Tática Visual guiando um conserto: "${tutorial?.titulo}".
 Passo atual que o usuário DEVE resolver agora: "${activeStep}"
 
 Sua missão:
@@ -138,15 +134,26 @@ Responda EXCLUSIVAMENTE em JSON:
 {
   "concluido": true ou false,
   "dica": "SUA INSTRUÇÃO AQUI. MÁX 8 PALAVRAS. TODO MAIÚSCULAS. TOM MILITAR."
-}` },
-            { inlineData: { mimeType: 'image/jpeg', data: base64Image } }
-          ]}
-        ]
+}`;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-1.5-flash",
+        contents: {
+          parts: [
+            { inlineData: { data: base64Image, mimeType: 'image/jpeg' } },
+            { text: prompt }
+          ],
+        },
+        config: {
+          responseMimeType: "application/json",
+        }
       });
       
-      if (response.text) {
+      const responseText = typeof response.text === 'function' ? response.text() : response.text;
+      
+      if (responseText) {
         try {
-          const cleanJson = response.text.replace(/```json/g, '').replace(/```/g, '').trim();
+          const cleanJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
           const result = JSON.parse(cleanJson);
           
           if (result.dica) {
@@ -166,9 +173,9 @@ Responda EXCLUSIVAMENTE em JSON:
           setArAnalysisText("CONTINUE EXECUTANDO A MANOBRA.");
         }
       }
-    } catch(e) {
+    } catch(e: any) {
       console.error("Radar corrompido:", e);
-      setArAnalysisText("FALHA NA TRANSMISSÃO.");
+      setArAnalysisText("ERRO: " + (e.message || "Desconhecido").substring(0, 50).toUpperCase());
     } finally {
       isAnalyzingRef.current = false;
       setIsAnalyzing(false);
