@@ -44,6 +44,22 @@ export const tutorials: Tutorial[] = [
       "Faça o teste da espuma para confirmar a ausência de vazamentos."
     ]
   },
+  { 
+    id: 'gas-3', 
+    titulo: "Como Trocar Mangueira do Gás e Registro do Fogão", 
+    categoria: "GÁS", 
+    duracao: "5:30", 
+    linkYoutube: "https://www.youtube.com/watch?v=MUrMksgWvQM", 
+    thumbnail: "https://img.youtube.com/vi/MUrMksgWvQM/hqdefault.jpg", 
+    nivel: "Soldado", 
+    descricaoCurta: "Viltrumitas não chamam técnico",
+    passos: [
+      "Isole o perímetro: Feche o gás e remova o registro do botijão.",
+      "Remova mangueira antiga afrouxando as abraçadeiras metálicas.",
+      "Encaixe a mangueira nova no fogão e no novo registro, fixando as abraçadeiras firmemente.",
+      "Conecte ao botijão e faça o teste da espuma nas duas pontas da mangueira."
+    ]
+  },
 
   // HIDRÁULICA
   { id: '1', titulo: "Conquiste vazamento de torneira em 47s", categoria: "HIDRÁULICA", duracao: "0:47", linkYoutube: "https://www.youtube.com/watch?v=ghXZC_TwTvY", thumbnail: "https://img.youtube.com/vi/ghXZC_TwTvY/hqdefault.jpg", nivel: "Recruta", descricaoCurta: "Viltrumitas não chamam técnico" },
