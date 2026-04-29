@@ -7,9 +7,44 @@ export interface Tutorial {
   thumbnail: string;
   nivel: string;
   descricaoCurta: string;
+  passos?: string[];
 }
 
 export const tutorials: Tutorial[] = [
+  // GÁS
+  { 
+    id: 'gas-1', 
+    titulo: "Como Instalar Registro no Botijão de Gás", 
+    categoria: "GÁS", 
+    duracao: "3:00", 
+    linkYoutube: "https://www.youtube.com/watch?v=GPdkcP1VlSI", 
+    thumbnail: "https://img.youtube.com/vi/GPdkcP1VlSI/hqdefault.jpg", 
+    nivel: "Recruta", 
+    descricaoCurta: "Viltrumitas não chamam técnico",
+    passos: [
+      "Isole o perímetro: certifique-se de que não há chamas ou faíscas próximas.",
+      "Remova o lacre de segurança do botijão novo.",
+      "Rosqueie o registro no botijão usando apenas a força das mãos.",
+      "Teste o selamento com espuma de sabão para confirmar vedação total."
+    ]
+  },
+  { 
+    id: 'gas-2', 
+    titulo: "Como trocar gás da cozinha", 
+    categoria: "GÁS", 
+    duracao: "4:00", 
+    linkYoutube: "https://www.youtube.com/watch?v=TmKFgGsaugo", 
+    thumbnail: "https://img.youtube.com/vi/TmKFgGsaugo/hqdefault.jpg", 
+    nivel: "Soldado", 
+    descricaoCurta: "Viltrumitas não chamam técnico",
+    passos: [
+      "Feche o registro de gás e desconecte o botijão vazio.",
+      "Posicione o botijão novo e retire o lacre tático de segurança.",
+      "Conecte a válvula e rosqueie firmemente com as mãos sem ferramentas.",
+      "Faça o teste da espuma para confirmar a ausência de vazamentos."
+    ]
+  },
+
   // HIDRÁULICA
   { id: '1', titulo: "Conquiste vazamento de torneira em 47s", categoria: "HIDRÁULICA", duracao: "0:47", linkYoutube: "https://www.youtube.com/watch?v=ghXZC_TwTvY", thumbnail: "https://img.youtube.com/vi/ghXZC_TwTvY/hqdefault.jpg", nivel: "Recruta", descricaoCurta: "Viltrumitas não chamam técnico" },
   { id: '2', titulo: "Conquiste torneira 1/4 de volta pingando sem gastar nada", categoria: "HIDRÁULICA", duracao: "3:10", linkYoutube: "https://www.youtube.com/watch?v=MsIX9InZiT8", thumbnail: "https://img.youtube.com/vi/MsIX9InZiT8/hqdefault.jpg", nivel: "Recruta", descricaoCurta: "Viltrumitas não chamam técnico" },

@@ -10,7 +10,18 @@ import { GoogleGenAI } from '@google/genai';
 import { arsenalTools } from '../data/arsenal';
 
 export default function Execution() {
-  const [checks, setChecks] = useState([false, false, false]);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const tutorial = location.state?.tutorial as Tutorial | undefined;
+
+  const epicSteps = tutorial?.passos || [
+    "Viltrumita, isole o perímetro (Corte a fonte/registro)",
+    "Aplique força e manobra de reparo (Conserto)",
+    "Confira o selamento tático pós-combate (Finalização)"
+  ];
+
+  const [checks, setChecks] = useState<boolean[]>(() => new Array(epicSteps.length).fill(false));
   const [dominado, setDominado] = useState(false);
   const [arModeEnabled, setArModeEnabled] = useState(false);
   const [arUnlocked, setArUnlocked] = useState(false);
@@ -23,17 +34,6 @@ export default function Execution() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isAnalyzingRef = useRef(false);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
-
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const tutorial = location.state?.tutorial as Tutorial | undefined;
-
-  const epicSteps = [
-    "Viltrumita, isole o perímetro (Corte a fonte/registro)",
-    "Aplique força e manobra de reparo (Conserto)",
-    "Confira o selamento tático pós-combate (Finalização)"
-  ];
 
   // Get recommended tools based on category
   const recommendedTools = tutorial 
